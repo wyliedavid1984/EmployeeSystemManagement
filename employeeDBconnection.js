@@ -13,11 +13,11 @@ const connection = mysql.createConnection({
     user: 'root',
     password: 'root',
     database: 'employee_db',
-    
+
 });
 console.log(chalk.blue(figlet.textSync('Employee   Management', {
-        horizontalLayout: 'fitted'
-    })));
+    horizontalLayout: 'fitted'
+})));
 connection.connect((err) => {
     if (err) throw err;
     console.log('connected as id ' + connection.threadId);
@@ -26,7 +26,7 @@ connection.connect((err) => {
 
 // Start inquirer prompt
 start = () => {
-    
+
     // opening questions
     inquirer.prompt([{
         type: "list",
@@ -86,35 +86,43 @@ addDept = () => {
 }
 
 addRole = () => {
-    inquirer.prompt([{
-        type: 'input',
-        name: 'title',
-        message: 'What is the new role?'
-    }, {
-        type: 'input',
-        name: 'salary',
-        message: "What is this position paid?"
-    }, {
-        type: 'input',
-        name: 'department_id',
-        message: 'What department is this position a part of?'
-    }]).then((response) => {
-        console.log("Inserting a new song...\n");
-        var query = connection.query(
-            "INSERT INTO role SET ?", {
-                title: response.title,
-                salary: response.salary,
-                department_id: department_id
+    connection.query("SELECT * FROM department", function (err, res) {
+        inquirer.prompt([{
+            type: 'input',
+            name: 'title',
+            message: 'What is the new role?'
+        }, {
+            type: 'input',
+            name: 'salary',
+            message: "What is this position paid?"
+        }, {
+            type: 'rawlist',
+            name: 'department_id',
+            choices: function (value) {
+                var deptArray = [];
+                for (var i = 0; i < res.length; i++) {
+                    deptArray.push(res[i].name);
+                }
+                return deptArray;
             },
-            function (err, res) {
-                if (err) throw err;
-                console.log(res.affectedRows + " song inserted!\n");
-                // Call updateSong AFTER the INSERT completes
-                start();
-            }
-        );
+            message: 'What department is this position a part of?',
+        }]).then((response) => {
+            console.log("Inserting a new song...\n");
+            var query = connection.query(
+                "INSERT INTO role SET ?", {
+                    title: response.title,
+                    salary: response.salary,
+                    department_id: department_id
+                },
+                function (err, res) {
+                    if (err) throw err;
+                    console.log(res.affectedRows + " song inserted!\n");
+                    // Call updateSong AFTER the INSERT completes
+                    start();
+                }
+            );
+        })
     })
-
 }
 
 addEmployee = () => {
@@ -137,7 +145,7 @@ addEmployee = () => {
     }]).then((response) => {
 
         var query = connection.query(
-            "INSERT INTO role SET ?", {
+            "INSERT INTO employee SET ?", {
                 first_name: response.firstName,
                 last_name: response.lastName,
                 department_id: response.role_id,
@@ -154,24 +162,26 @@ addEmployee = () => {
 }
 
 viewDept = () => {
+    console.log("Selecting all departments..\n")
     var query = connection.query("SELECT * FROM department", function (err, res) {
-            if (err) throw err;
-            // Log all results of the SELECT statement
-            console.table(res);
-            start();
+        if (err) throw err;
+        // Log all results of the SELECT statement
+        console.table(res);
+        start();
     })
 };
 
 viewRole = () => {
     console.log("Selecting all roles...\n");
     var query = connection.query(
-        "SELECT role.title, role.salary, department.name FROM role INNER JOIN department ON role.department_id = department.id ORDER BY role.id", function (err, res) {
-        if (err) throw err;
-        // Log all results of the SELECT statement
+        "SELECT role.title, role.salary, department.name FROM role INNER JOIN department ON role.department_id = department.id ORDER BY role.id",
+        function (err, res) {
+            if (err) throw err;
+            // Log all results of the SELECT statement
             console.log(res.title)
-        console.table(res);
-        start();
-    });
+            console.table(res);
+            start();
+        });
 
 }
 
