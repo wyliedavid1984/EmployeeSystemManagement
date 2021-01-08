@@ -235,13 +235,12 @@ updateRole = () => {
                     choices: roles,
                     message: "What's the new role?",
                 }]).then((res) => {
-                    var query = connection.query(
-                        "UPDATE employee SET ? WHERE ?", {
+                    var query = connection.query("UPDATE employee SET ? WHERE ?", [{
                             role_id: res.roleid
                         },{
 
-                            id = response.employeePicked
-                        },
+                            id: response.employeePicked
+                        }],
                         function (err, res) {
                             if (err) throw err;
                             console.log(res.affectedRows + " song inserted!\n");
@@ -249,7 +248,6 @@ updateRole = () => {
                             console.table(res)
                             start();
                         })
-
                 })
             })
         })
