@@ -5,17 +5,17 @@ const clear = require('clear');
 const figlet = require('figlet');
 
 // create modules
-const add = require('./add');
-const view = require('./view');
-const update = require('./update');
+const add = require('./lib/add');
+const view = require('./lib/view');
+const update = require('./lib/update');
+
 
 
 // Start inquirer prompt
 start = () => {
-    console.log(
-        chalk.blue(
-            figlet.textSync('Employee   Management', {
-                horizontalLayout: 'fitted'
+    clear()
+    console.log(chalk.blue(figlet.textSync('Employee   Management', {
+         horizontalLayout: 'fitted'
             })
         )
     );
@@ -28,7 +28,7 @@ start = () => {
         choices: ['Add Department', 'Add Role', 'Add Employee', 'View Department', 'View Role', 'View Employee', 'Update Employee Role', 'EXIT']
     }]).then((response) => {
         console.log(response, "HIT")
-        switch (response) {
+        switch (response.choices) {
 
             case "Add Department":
                 add.addDept();
@@ -57,7 +57,6 @@ start = () => {
     })  
 }
 
-module.exports = start();
 // viewPrompts = () => {
 //     inquirer.prompt([{
 //         type: 'list',

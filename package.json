@@ -4,6 +4,7 @@
   "description": "employee Management app",
   "main": "employeeDBconnection.js",
   "scripts": {
+    "start": "node prompt.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
