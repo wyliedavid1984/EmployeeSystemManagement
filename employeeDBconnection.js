@@ -99,25 +99,29 @@ addRole = () => {
             type: 'rawlist',
             name: 'department_id',
             choices: function (value) {
+                console.log(res)
                 var deptArray = [];
                 for (var i = 0; i < res.length; i++) {
-                    deptArray.push(res[i].name);
+                    deptArray.push({
+                        id: res[i].id,
+                        name: res[i].name
+                    });
                 }
+                console.log(deptArray)
                 return deptArray;
             },
             message: 'What department is this position a part of?',
         }]).then((response) => {
-            console.log("Inserting a new song...\n");
             var query = connection.query(
                 "INSERT INTO role SET ?", {
                     title: response.title,
                     salary: response.salary,
-                    department_id: department_id
+                    department_id: response.department_id
                 },
                 function (err, res) {
                     if (err) throw err;
-                    console.log(res.affectedRows + " song inserted!\n");
-                    // Call updateSong AFTER the INSERT completes
+                    console.log('New Role Successfully Added')
+                    console.table(res)
                     start();
                 }
             );
@@ -135,12 +139,34 @@ addEmployee = () => {
         name: 'lastName',
         message: "What is the employees Last name?"
     }, {
-        type: 'input',
+        type: 'raw list',
         name: 'role_id',
+        choices: function (value) {
+            connection.query("SELECT * FROM role", function (err, res) {
+                console.log(res)
+                var roleArray = [];
+                for (var i = 0; i < res.length; i++) {
+                    roleArray.push({title: res[i].title});
+                }
+                return roleArray;
+            })
+        },
         message: 'What is the role?'
     }, {
-        type: 'input',
+        type: 'raw list',
         name: "manager_id",
+        choices: function () {
+            connection.query("SELECT * FROM employee WHERE employee.manager_id=null", function (err, res) {
+                var managerArray = [];
+                for (var i = 0; i < res.length; i++) {
+                    managerArray.push({
+                        value: res[i].id,
+                        name: res[i].name
+                    });
+                }
+                return managerArray;
+            })
+        },
         message: "What is the Manager's name"
     }]).then((response) => {
 
