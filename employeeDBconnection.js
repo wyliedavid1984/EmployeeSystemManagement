@@ -5,6 +5,7 @@ const clear = require('clear');
 const figlet = require('figlet');
 const mysql = require('mysql');
 const cTable = require('console.table');
+const _ = require('lodash');
 
 // Connect to the ice_creamDB database using a localhost connection
 const connection = mysql.createConnection({
@@ -86,7 +87,7 @@ addDept = () => {
 }
 
 addRole = () => {
-    connection.query("SELECT * FROM department", function (err, res) {
+    connection.query("SELECT * FROM department ORDER BY id", function (err, res) {
         inquirer.prompt([{
             type: 'input',
             name: 'title',
@@ -130,62 +131,54 @@ addRole = () => {
 }
 
 addEmployee = () => {
-    inquirer.prompt([{
-        type: 'input',
-        name: 'firstName',
-        message: 'What is the employees first name?'
-    }, {
-        type: 'input',
-        name: 'lastName',
-        message: "What is the employees Last name?"
-    }, {
-        type: 'raw list',
-        name: 'role_id',
-        choices: function (value) {
-            connection.query("SELECT * FROM role", function (err, res) {
-                console.log(res)
-                var roleArray = [];
-                for (var i = 0; i < res.length; i++) {
-                    roleArray.push({title: res[i].title});
-                }
-                return roleArray;
+    connection.query("SELECT * FROM role ORDER BY id", async function (err, res) {
+        console.table(res)
+        const roles = _.map(res, _.iteratee('id'));
+        inquirer.prompt([{
+            type: 'input',
+            name: 'firstName',
+            message: 'What is the employees first name?'
+        }, {
+            type: 'input',
+            name: 'lastName',
+            message: "What is the employees Last name?"
+        }, {
+            type: 'rawlist',
+            name: 'role_id',
+            choices: roles,
+            message: 'What is the role?'
+        }]).then((response) => {
+            connection.query("SELECT employee.first_name, employee.last_name, employee.id FROM employee ORDER BY id", function (err, resp) {
+                console.table(resp);
+                const managers = _.map(res, _.iteratee('id'));
+                inquirer.prompt([{
+                    type: 'rawlist',
+                    name: "manager_id",
+                    choices: managers,
+                    message: "What is the Manager's name"
+                }]).then((respond) => {
+                    var query = connection.query(
+                        "INSERT INTO employee SET ?", {
+                            first_name: response.firstName,
+                            last_name: response.lastName,
+                            role_id: response.role_id,
+                            manager_id: respond.manager_id
+                        },
+                        function (err, res) {
+                            if (err) throw err;
+                            console.log(res.affectedRows + " song inserted!\n");
+                            // Call updateSong AFTER the INSERT completes
+                            console.table(res)
+                            start();
+                        })
+                })
             })
-        },
-        message: 'What is the role?'
-    }, {
-        type: 'raw list',
-        name: "manager_id",
-        choices: function () {
-            connection.query("SELECT * FROM employee WHERE employee.manager_id=null", function (err, res) {
-                var managerArray = [];
-                for (var i = 0; i < res.length; i++) {
-                    managerArray.push({
-                        value: res[i].id,
-                        name: res[i].name
-                    });
-                }
-                return managerArray;
-            })
-        },
-        message: "What is the Manager's name"
-    }]).then((response) => {
+        })
 
-        var query = connection.query(
-            "INSERT INTO employee SET ?", {
-                first_name: response.firstName,
-                last_name: response.lastName,
-                department_id: response.role_id,
-                manager_id: response.manager_id
-            },
-            function (err, res) {
-                if (err) throw err;
-                console.log(res.affectedRows + " song inserted!\n");
-                // Call updateSong AFTER the INSERT completes
-                start();
-            })
     })
-
 }
+
+
 
 viewDept = () => {
     console.log("Selecting all departments..\n")
@@ -223,25 +216,67 @@ viewEmployee = () => {
 }
 
 updateRole = () => {
-    console.log("Updating songs...\n");
-    var query = connection.query(
-        "UPDATE employee SET ? WHERE ?",
-        [{
-                artist: "The Temptations"
-            },
-            {
-                title: "My Girl"
-            }
-        ],
-        function (err, res) {
-            if (err) throw err;
-            console.log(res.affectedRows + " Songs updated!\n");
-            // Call deleteSong AFTER the UPDATE completes
-            start();
-        }
-    );
+    connection.query("SELECT employee.first_name, employee.last_name, employee.id FROM employee", function (err, res) {
+        console.table(res)
+        const employee = _.map(res, _.iteratee('id'));
+        inquirer.prompt([{
+            type: 'rawlist',
+            name: 'employeePicked',
+            choices: employee,
+            message: "What employee's role are we changing?",
+        }]).then((response) => {
+            console.log(response)
+            connection.query("SELECT * FROM role", function (err, res) {
+                console.table(res)
+                const roles = _.map(res, _.iteratee('id'));
+                inquirer.prompt([{
+                    type: 'rawlist',
+                    name: 'roleid',
+                    choices: roles,
+                    message: "What's the new role?",
+                }]).then((res) => {
+                    var query = connection.query(
+                        "UPDATE employee SET ? WHERE ?", {
+                            role_id: res.roleid
+                        },{
 
-    // logs the actual query being run
-    console.log(query.sql);
+                            id = response.employeePicked
+                        },
+                        function (err, res) {
+                            if (err) throw err;
+                            console.log(res.affectedRows + " song inserted!\n");
+                            // Call updateSong AFTER the INSERT completes
+                            console.table(res)
+                            start();
+                        })
 
+                })
+            })
+        })
+    })
 }
+
+// function add() {
+//     //pass one array in
+//     db.getDepartments()
+//         .then(([departments]) => {
+//                 return inquirer.prompt([{
+//                         name: 'title',
+//                         message: "What is the name of the role?"
+//                     },
+//                     {
+//                         name: 'salary',
+//                         message: "What is the salary amount?"
+//                     },
+//                     {
+//                         type: 'list',
+//                         name: 'departmentPrompt',
+//                         message: "What is the role's department?",
+//                         //map each with name as display, value as return value
+//                         choices: departments.map(department => ({
+//                             name: department.name,
+//                             value: department.id
+//                         })),
+//                     },
+//                 ])
+//             })}
