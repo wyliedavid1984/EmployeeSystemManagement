@@ -106,14 +106,16 @@ addRole = () => {
                 var deptArray = [];
                 for (var i = 0; i < res.length; i++) {
                     deptArray.push({
-                        id: res[i].id,
+                        value: res[i].id,
                         name: res[i].name
                     });
                 }
+                console.log(deptArray)
                 return deptArray;
             },
             message: 'What department is this position a part of?',
         }]).then((response) => {
+            console.log(response);
             var query = connection.query(
                 "INSERT INTO role SET ?", {
                     title: response.title,

@@ -1,7 +1,7 @@
 # EmployeeSystemManagement
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-<img src="https://img.shields.io/badge/node.js%20-%2343853D.svg?&style=for-the-badge&logo=node.js&logoColor=white"/><img src="https://img.shields.io/badge/css3%20-%231572B6.svg?&style=for-the-badge&logo=css3&logoColor=white"/>
+<img src="https://img.shields.io/badge/node.js%20-%2343853D.svg?&style=for-the-badge&logo=node.js&logoColor=white"/>
 
 [Note Taker Website](https://shielded-garden-01905.herokuapp.com/)
 
@@ -73,12 +73,12 @@ For users that need to keep track of an employee data base,
 
 ![View Dept](./assets/images/dept.png)
 
-![Add Employee](./assets/images/.png)
+![Add Employee](./assets/images/addEmployee.png)
 
 
 Click on the gif to be linked to the video
 
-[![Gif of video](./public/assets/images/NoteTaker.gif)](https://drive.google.com/file/d/1tqdl3Cbk0IHt20BHImzLgav4XJuS49_R/view)
+[![Gif of video](./assets/images/employeeTrack.gif)](https://drive.google.com/file/d/14KsK9Nu5ExY4cmreyg2_-70CqWG5MimC/view)
 
 
 </details>
