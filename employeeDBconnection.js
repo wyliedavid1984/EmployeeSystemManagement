@@ -64,21 +64,23 @@ start = () => {
         }
     })
 }
-
+// starting with a function
 start();
-addDept = () => {
 
+// add dept 
+addDept = () => {
     inquirer.prompt([{
         type: 'input',
         name: 'deptName',
         message: 'What is the name of the new Department?'
     }]).then((response) => {
         var query = connection.query(
-            "INSERT INTO department SET ?", response.deptName,
+            "INSERT INTO department SET ?", {
+                name: response.deptName
+            },
             function (err, res) {
                 if (err) throw err;
                 console.log('New Department Successfully Added')
-                console.table(res)
                 start();
             }
         );
@@ -86,6 +88,7 @@ addDept = () => {
 
 }
 
+// adding a role
 addRole = () => {
     connection.query("SELECT * FROM department ORDER BY id", function (err, res) {
         inquirer.prompt([{
@@ -100,7 +103,6 @@ addRole = () => {
             type: 'rawlist',
             name: 'department_id',
             choices: function (value) {
-                console.log(res)
                 var deptArray = [];
                 for (var i = 0; i < res.length; i++) {
                     deptArray.push({
@@ -108,7 +110,6 @@ addRole = () => {
                         name: res[i].name
                     });
                 }
-                console.log(deptArray)
                 return deptArray;
             },
             message: 'What department is this position a part of?',
@@ -122,7 +123,6 @@ addRole = () => {
                 function (err, res) {
                     if (err) throw err;
                     console.log('New Role Successfully Added')
-                    console.table(res)
                     start();
                 }
             );
@@ -148,8 +148,8 @@ addEmployee = () => {
             choices: roles,
             message: 'What is the role?'
         }]).then((response) => {
-            connection.query("SELECT employee.first_name, employee.last_name, employee.id FROM employee ORDER BY id", function (err, resp) {
-                console.table(resp);
+            connection.query("SELECT employee.first_name, employee.last_name, employee.id FROM employee ORDER BY id", function (err, res) {
+                console.table(res);
                 const managers = _.map(res, _.iteratee('id'));
                 inquirer.prompt([{
                     type: 'rawlist',
@@ -167,8 +167,6 @@ addEmployee = () => {
                         function (err, res) {
                             if (err) throw err;
                             console.log(res.affectedRows + " song inserted!\n");
-                            // Call updateSong AFTER the INSERT completes
-                            console.table(res)
                             start();
                         })
                 })
@@ -237,15 +235,13 @@ updateRole = () => {
                 }]).then((res) => {
                     var query = connection.query("UPDATE employee SET ? WHERE ?", [{
                             role_id: res.roleid
-                        },{
+                        }, {
 
                             id: response.employeePicked
                         }],
                         function (err, res) {
                             if (err) throw err;
                             console.log(res.affectedRows + " song inserted!\n");
-                            // Call updateSong AFTER the INSERT completes
-                            console.table(res)
                             start();
                         })
                 })
