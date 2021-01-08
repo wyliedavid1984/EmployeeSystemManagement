@@ -89,6 +89,7 @@ Click on the gif to be linked to the video
 * [npm Documents](https://www.npmjs.com/)
 * [Express.js](https://expressjs.com/)
 * [Stack Overflow](https://stackoverflow.com/)
+* [W3Schools](https://www.w3schools.com/sql/default.asp)
 
 ## License
 

@@ -251,28 +251,3 @@ updateRole = () => {
         })
     })
 }
-
-// function add() {
-//     //pass one array in
-//     db.getDepartments()
-//         .then(([departments]) => {
-//                 return inquirer.prompt([{
-//                         name: 'title',
-//                         message: "What is the name of the role?"
-//                     },
-//                     {
-//                         name: 'salary',
-//                         message: "What is the salary amount?"
-//                     },
-//                     {
-//                         type: 'list',
-//                         name: 'departmentPrompt',
-//                         message: "What is the role's department?",
-//                         //map each with name as display, value as return value
-//                         choices: departments.map(department => ({
-//                             name: department.name,
-//                             value: department.id
-//                         })),
-//                     },
-//                 ])
-//             })}
