@@ -162,6 +162,20 @@ viewDept = () => {
     })
 };
 
+viewRole = () => {
+    console.log("Selecting all roles...\n");
+    var query = connection.query(
+        "SELECT role.title, role.salary, department.name FROM role INNER JOIN department ON role.department_id = department.id ORDER BY role.id", function (err, res) {
+        if (err) throw err;
+        // Log all results of the SELECT statement
+            console.log(res.title)
+        console.table(res);
+        start();
+    });
+
+}
+
+
 
 updateRole = () => {
     console.log("Updating songs...\n");
