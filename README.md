@@ -65,12 +65,15 @@ For users that need to keep track of an employee data base,
 <details>
 <summary>Screen Shots and Gif with Video link</summary>
 
-![Index Page](./public/assets/images/indexPage.png)
+![Start of the application](./assets/images/start.png)
 
-![Note page with notes](./public/assets/images/withNotes.png)
+![View Employee](./assets/images/employee.png)
 
-![Note page without notes](./public/assets/images/noNotes.png)
+![View Roles](./assets/images/role.png)
 
+![View Dept](./assets/images/dept.png)
+
+![Add Employee](./assets/images/.png)
 
 
 Click on the gif to be linked to the video
