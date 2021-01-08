@@ -175,7 +175,16 @@ viewRole = () => {
 
 }
 
+viewEmployee = () => {
+    console.log("Selecting all employees...\n");
+    var query = connection.query("SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON role.department_id = department.id", function (err, res) {
+        if (err) throw err;
+        // Log all results of the SELECT statement
+        console.table(res);
+        start();
+    });
 
+}
 
 updateRole = () => {
     console.log("Updating songs...\n");
