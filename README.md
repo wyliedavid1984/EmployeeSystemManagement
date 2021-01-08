@@ -1,9 +1,9 @@
 # EmployeeSystemManagement
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-<img src="https://img.shields.io/badge/node.js%20-%2343853D.svg?&style=for-the-badge&logo=node.js&logoColor=white"/>
+<img src="https://img.shields.io/badge/node.js%20-%2343853D.svg?&style=for-the-badge&logo=node.js&logoColor=white"/><img src="https://img.shields.io/badge/mysql-%2300f.svg?&style=for-the-badge&logo=mysql&logoColor=white"/>
 
-[Note Taker Website](https://shielded-garden-01905.herokuapp.com/)
+[Git Hub repo](https://github.com/wyliedavid1984/EmployeeSystemManagement)
 
 ## Description 
 
