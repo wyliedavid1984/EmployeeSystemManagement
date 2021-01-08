@@ -13,25 +13,20 @@ const connection = mysql.createConnection({
     user: 'root',
     password: 'root',
     database: 'employee_db',
+    
 });
-
+console.log(chalk.blue(figlet.textSync('Employee   Management', {
+        horizontalLayout: 'fitted'
+    })));
 connection.connect((err) => {
     if (err) throw err;
     console.log('connected as id ' + connection.threadId);
-    
+
 });
-
-
-
-
 
 // Start inquirer prompt
 start = () => {
-    clear()
-    console.log(chalk.blue(figlet.textSync('Employee   Management', {
-        horizontalLayout: 'fitted'
-    })));
-    console.log("help")
+    
     // opening questions
     inquirer.prompt([{
         type: "list",
@@ -39,7 +34,7 @@ start = () => {
         message: "What would you like to do?",
         choices: ['Add Department', 'Add Role', 'Add Employee', 'View Department', 'View Role', 'View Employee', 'Update Employee Role', 'EXIT']
     }]).then((response) => {
-        
+
         switch (response.choices) {
 
             case "Add Department":
@@ -83,9 +78,11 @@ addDept = () => {
                 if (err) throw err;
                 console.log('New Department Successfully Added')
                 console.table(res)
+                start();
             }
         );
     })
+
 }
 
 addRole = () => {
@@ -113,9 +110,11 @@ addRole = () => {
                 if (err) throw err;
                 console.log(res.affectedRows + " song inserted!\n");
                 // Call updateSong AFTER the INSERT completes
+                start();
             }
         );
     })
+
 }
 
 addEmployee = () => {
@@ -148,40 +147,26 @@ addEmployee = () => {
                 if (err) throw err;
                 console.log(res.affectedRows + " song inserted!\n");
                 // Call updateSong AFTER the INSERT completes
+                start();
             })
     })
 
 }
-viewDept = () => {
 
+viewDept = () => {
     var query = connection.query("SELECT * FROM department", function (err, res) {
-        if (err) throw err;
-        // Log all results of the SELECT statement
-        console.table(res);
-    });
-}
-viewRole = () => {
-    console.log("Selecting all songs...\n");
-    var query = connection.query("SELECT roles.*, department.* FROM roles FULL OUTER JOIN department ON role ORDER BY role_id ", function (err, res) {
-        if (err) throw err;
-        // Log all results of the SELECT statement
-        console.table(res);
-    });
-}
-viewEmployee = () => {
-    console.log("Selecting all songs...\n");
-    var query = connection.query("SELECT * FROM ?", choice, function (err, res) {
-        if (err) throw err;
-        // Log all results of the SELECT statement
-        console.table(res);
-    });
-}
+            if (err) throw err;
+            // Log all results of the SELECT statement
+            console.table(res);
+            start();
+    })
+};
+
 
 updateRole = () => {
-    console.log('UPDATE')
     console.log("Updating songs...\n");
     var query = connection.query(
-        "UPDATE songs SET ? WHERE ?",
+        "UPDATE employee SET ? WHERE ?",
         [{
                 artist: "The Temptations"
             },
@@ -193,10 +178,11 @@ updateRole = () => {
             if (err) throw err;
             console.log(res.affectedRows + " Songs updated!\n");
             // Call deleteSong AFTER the UPDATE completes
-
+            start();
         }
     );
 
     // logs the actual query being run
     console.log(query.sql);
+
 }
