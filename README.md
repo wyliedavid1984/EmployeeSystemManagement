@@ -71,14 +71,14 @@ For users that need to keep track of an employee data base,
 
 ![View Roles](./assets/images/role.png)
 
-![View Dept](./assets/images/dept.png)
+![View Dept](./assets/images/dept.png)gif 
 
 ![Add Employee](./assets/images/addEmployee.png)
 
 
 Click on the gif to be linked to the video
 
-[![Gif of video](./assets/images/employeeTrack.gif)](https://drive.google.com/file/d/14KsK9Nu5ExY4cmreyg2_-70CqWG5MimC/view)
+[![Gif of video](./assets/images/employeeTracker.gif)](https://drive.google.com/file/d/14KsK9Nu5ExY4cmreyg2_-70CqWG5MimC/view)
 
 
 </details>
