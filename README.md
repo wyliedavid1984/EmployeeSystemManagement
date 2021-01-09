@@ -69,9 +69,9 @@ For users that need to keep track of an employee data base,
 
 ![View Employee](./assets/images/employee.png)
 
-![View Roles](./assets/images/role.png)
+![View Roles](./assets/images/roles.png)
 
-![View Dept](./assets/images/dept.png)gif 
+![View Dept](./assets/images/dept.png) 
 
 ![Add Employee](./assets/images/addEmployee.png)
 
